@@ -28,12 +28,29 @@ namespace MintControlAPI.Managers
             return context.Functions.ToList();
         }
 
+        public IEnumerable<FunctionModel> GetByUserName(string userName)
+        {
+            long userId = 0;
+            try
+            {
+                userId = context.Users.Where(e => e.Username == userName).Select(s => s.UserId).Single();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+            return context.Functions.Where(e => e.UserId == userId).Select(s => s).ToList();
+        }
+
         public FunctionModel Add(FunctionModel value)
         {
             context.Functions.Add(value);
             context.SaveChanges();
             return value;
         }
+
 
         public FunctionModel Update(long id, FunctionModel value)
         {

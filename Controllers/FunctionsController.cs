@@ -28,6 +28,13 @@ namespace MintControlAPI.Controllers
             return _manager.GetAll();
         }
 
+        // GET: api/<FunctionsController>/<userId>
+        [HttpGet("{userName}")]
+        public IEnumerable<FunctionModel> GetByUser(string userName)
+        {
+            return _manager.GetByUserName(userName);
+        }
+
         // POST api/<FunctionsController>
         [HttpPost]
         public FunctionModel Post([FromBody] FunctionModel value)
