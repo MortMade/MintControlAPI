@@ -37,11 +37,10 @@ namespace MintControlAPI.Managers
             }
             catch (Exception)
             {
-
-                throw;
+                //TODO if none exist create a new user...
             }
             
-            return context.Functions.Where(e => e.UserId == userId).Select(s => s).ToList();
+            return context.Functions.Where(e => e.UserId == userId || e.UserId == 1).Select(s => s).ToList();
         }
 
         public FunctionModel Add(FunctionModel value)
