@@ -12,5 +12,6 @@ namespace MintControlAPI
 
 
         public DbSet<FunctionModel> Functions { get; set; }
+        public DbSet<UserModel> Users { get; set; }
     }
 }

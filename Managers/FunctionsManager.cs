@@ -30,19 +30,30 @@ namespace MintControlAPI.Managers
 
         public FunctionModel Add(FunctionModel value)
         {
-            value.FuncId = _nextId++;
-            Data.Add(value);
+            context.Functions.Add(value);
+            context.SaveChanges();
             return value;
         }
 
-        public FunctionModel Update(int id, FunctionModel value)
+        public FunctionModel Update(long id, FunctionModel value)
         {
-            throw new NotImplementedException();
+            FunctionModel FunctionToUpdate = context.Functions.Find(id);
+            if (FunctionToUpdate == null) return null;
+            FunctionToUpdate.Title = value.Title;
+            FunctionToUpdate.Command = value.Command;
+            FunctionToUpdate.UserId = value.UserId;
+            FunctionToUpdate.FuncRights = value.FuncRights;
+            context.SaveChanges();
+            return FunctionToUpdate;
         }
 
-        public FunctionModel Delete(int id)
+        public FunctionModel Delete(long id)
         {
-            throw new NotImplementedException();
+            FunctionModel FunctionToDelete = context.Functions.Find(id);
+            if (FunctionToDelete == null) return null;
+            context.Functions.Remove(FunctionToDelete);
+            context.SaveChanges();
+            return FunctionToDelete;
         }
     }
 }

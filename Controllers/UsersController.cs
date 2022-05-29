@@ -13,38 +13,38 @@ namespace MintControlAPI.Controllers
     [Route("api/[controller]")]
     // [controller] means the name of the controller minus "Controller"
     [ApiController]
-    public class FunctionsController : Controller
+    public class UsersController : Controller
     {
-        private readonly FunctionsManager _manager;
+        private readonly UsersManager _manager;
 
-        public FunctionsController(MintContext context)
+        public UsersController(MintContext context)
         {
-            _manager = new FunctionsManager(context);
+            _manager = new UsersManager(context);
         }
-        // GET: api/<FunctionsController>
+        // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<FunctionModel> Get()
+        public IEnumerable<UserModel> Get()
         {
             return _manager.GetAll();
         }
 
-        // POST api/<FunctionsController>
+        // POST api/<UsersController>
         [HttpPost]
-        public FunctionModel Post([FromBody] FunctionModel value)
+        public UserModel Post([FromBody] UserModel value)
         {
             return _manager.Add(value);
         }
 
-        // PUT api/<FunctionsController>/5
+        // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public FunctionModel Put(long id, [FromBody] FunctionModel value)
+        public UserModel Put(long id, [FromBody] UserModel value)
         {
             return _manager.Update(id, value);
         }
 
-        // DELETE api/<FunctionsController>/5
+        // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public FunctionModel Delete(long id)
+        public UserModel Delete(long id)
         {
             return _manager.Delete(id);
         }
