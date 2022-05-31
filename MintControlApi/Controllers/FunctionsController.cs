@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MintControlAPI.Managers;
 using MintControlAPI.Models;
@@ -23,37 +24,66 @@ namespace MintControlAPI.Controllers
         }
         // GET: api/<FunctionsController>
         [HttpGet]
-        public IEnumerable<FunctionModel> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<FunctionModel>> Get()
         {
-            return _manager.GetAll();
+            List<FunctionModel> allFunc = _manager.GetAll();
+            if (allFunc.Count == 0) return NotFound("Nothing found");
+            return Ok(allFunc);
         }
 
         // GET: api/<FunctionsController>/<userId>
         [HttpGet("{userName}")]
-        public IEnumerable<FunctionModel> GetByUser(string userName)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<FunctionModel>> GetByUser(string userName)
         {
-            return _manager.GetByUserName(userName);
+            List<FunctionModel> allFunc = _manager.GetByUserName(userName);
+            if (allFunc.Count == 0) return NotFound("Nothing found");
+            return Ok(allFunc);
         }
 
         // POST api/<FunctionsController>
         [HttpPost]
-        public FunctionModel Post([FromBody] FunctionModel value)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<FunctionModel> Post([FromBody] FunctionModel value)
         {
-            return _manager.Add(value);
+            try
+            {
+                FunctionModel postFunc = _manager.Add(value);
+                string uri = Url.RouteUrl(RouteData.Values) + "/" + postFunc.FuncId;
+                return Created(uri, postFunc);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<FunctionsController>/5
         [HttpPut("{id}")]
-        public FunctionModel Put(long id, [FromBody] FunctionModel value)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<FunctionModel> Put(long id, [FromBody] FunctionModel value)
         {
-            return _manager.Update(id, value);
+            FunctionModel funcToUpdate = _manager.GetById(id);
+            if (funcToUpdate == null) return NotFound("Not found");
+            FunctionModel updatedFunction = _manager.Update(id, value);
+            return Ok(updatedFunction);
         }
 
         // DELETE api/<FunctionsController>/5
         [HttpDelete("{id}")]
-        public FunctionModel Delete(long id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<FunctionModel> Delete(long id)
         {
-            return _manager.Delete(id);
+            FunctionModel funcToDelete = _manager.GetById(id);
+            if (funcToDelete == null) return NotFound("Not found");
+            FunctionModel deletedFunction = _manager.Delete(id);
+            return Ok(deletedFunction);
         }
     }
 }
