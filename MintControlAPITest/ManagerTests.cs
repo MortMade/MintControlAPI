@@ -37,9 +37,49 @@ namespace MintControlAPITest
             int sizeOfFunctions = allFunctions.Count;
             Assert.AreEqual(sizeOfFunctions, allFunctions.Count);
 
+            //Test GetNoUserName
+            List<FunctionModel> functionNoUserName = _manager.GetByUserName("");
+            Assert.AreEqual(1, functionNoUserName.Count);
+
             //Test GetByUserName
             List<FunctionModel> functionByUserName = _manager.GetByUserName("made0474@edu.zealand.dk");
-            Assert.AreEqual(2,functionByUserName.Count);
+            Assert.AreNotEqual(1, functionByUserName.Count);
+        }
+
+        [TestMethod]
+        public void ManagerPostDeleteFunctionsTest()
+        {
+            // Test Add
+            List<FunctionModel> allFunctions = _manager.GetAll();
+            FunctionModel newFunc = new FunctionModel();
+            newFunc.Title = "Test";
+            newFunc.Command = "Test";
+            newFunc.UserId = 4;
+            newFunc.FuncRights = 0;
+            int sizeAllFunctions = allFunctions.Count;
+            _manager.Add(newFunc);
+            allFunctions = _manager.GetAll();
+            Assert.AreEqual(allFunctions.Count, sizeAllFunctions + 1);
+
+            // Test Delete
+            _manager.Delete(newFunc.FuncId);
+            allFunctions = _manager.GetAll();
+            Assert.AreEqual(allFunctions.Count, sizeAllFunctions);
+
+        }
+        [TestMethod]
+        public void ManagerUpdateFunctionsTest()
+        {
+            // Test Update
+            List<FunctionModel> allFunctions = _manager.GetAll();
+            FunctionModel getIdFunc = _manager.GetById(1);
+            Assert.AreEqual("SendFireworks", getIdFunc.Title);
+            getIdFunc.Title = "SendLove";
+            _manager.Update(getIdFunc.FuncId, getIdFunc);
+            FunctionModel getIdFunc2 = _manager.GetById(1);
+            Assert.AreEqual(getIdFunc.Title, getIdFunc2.Title);
+            getIdFunc.Title = "SendFireworks";
+            _manager.Update(getIdFunc.FuncId, getIdFunc);
         }
     }
 }

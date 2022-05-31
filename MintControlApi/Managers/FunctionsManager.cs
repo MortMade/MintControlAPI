@@ -43,6 +43,11 @@ namespace MintControlAPI.Managers
             return context.Functions.Where(e => e.UserId == userId || e.UserId == 1).Select(s => s).ToList();
         }
 
+        public FunctionModel GetById(long id)
+        {
+            return context.Functions.Find(id);
+        }
+
         public FunctionModel Add(FunctionModel value)
         {
             context.Functions.Add(value);
