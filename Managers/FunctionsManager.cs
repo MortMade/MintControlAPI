@@ -22,13 +22,13 @@ namespace MintControlAPI.Managers
             this.context = context;
         }
 
-        public IEnumerable<FunctionModel> GetAll()
+        public List<FunctionModel> GetAll()
         {
 
             return context.Functions.ToList();
         }
 
-        public IEnumerable<FunctionModel> GetByUserName(string userName)
+        public List<FunctionModel> GetByUserName(string userName)
         {
             long userId = 0;
             try
