@@ -59,12 +59,12 @@ namespace MintControlAPITest
             int sizeAllFunctions = allFunctions.Count;
             _manager.Add(newFunc);
             allFunctions = _manager.GetAll();
-            Assert.AreEqual(allFunctions.Count, sizeAllFunctions + 1);
+            Assert.AreEqual(sizeAllFunctions + 1, allFunctions.Count );
 
             // Test Delete
             _manager.Delete(newFunc.FuncId);
             allFunctions = _manager.GetAll();
-            Assert.AreEqual(allFunctions.Count, sizeAllFunctions);
+            Assert.AreEqual(sizeAllFunctions, allFunctions.Count);
 
         }
         [TestMethod]
