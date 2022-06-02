@@ -33,7 +33,7 @@ namespace MintControlAPI.Controllers
             return Ok(allFunc);
         }
 
-        // GET: api/<FunctionsController>/<userId>
+        // GET: api/<FunctionsController>/<userName>
         [HttpGet("{userName}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,6 +53,23 @@ namespace MintControlAPI.Controllers
             try
             {
                 FunctionModel postFunc = _manager.Add(value);
+                string uri = Url.RouteUrl(RouteData.Values) + "/" + postFunc.FuncId;
+                return Created(uri, postFunc);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        // POST api/<FunctionsController>/<userName>
+        [HttpPost("{userName}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<FunctionModel> PostToUser([FromBody] FunctionModel value, string userName)
+        {
+            try
+            {
+                FunctionModel postFunc = _manager.AddToUser(value, userName);
                 string uri = Url.RouteUrl(RouteData.Values) + "/" + postFunc.FuncId;
                 return Created(uri, postFunc);
             }

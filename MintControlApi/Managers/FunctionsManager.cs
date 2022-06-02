@@ -46,6 +46,22 @@ namespace MintControlAPI.Managers
             context.SaveChanges();
             return value;
         }
+        public FunctionModel AddToUser(FunctionModel value, string userName)
+        {
+            long userId = 0;
+            try
+            {
+                userId = context.Users.Where(e => e.Username == userName).Select(s => s.UserId).Single();
+            }
+            catch (Exception)
+            {
+                //TODO what to do if user doesnt exist, throw exception
+            }
+            value.UserId = userId;
+            context.Functions.Add(value);
+            context.SaveChanges();
+            return value;
+        }
 
 
         public FunctionModel Update(long id, FunctionModel value)
