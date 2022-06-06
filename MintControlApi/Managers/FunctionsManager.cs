@@ -22,6 +22,29 @@ namespace MintControlAPI.Managers
 
         public List<FunctionModel> GetByUserName(string userName)
         {
+            /*
+             * Det her ville tage for lang tid ...
+            List < FunctionModel> alllist = GetAll();
+            List < UserModel> allusers = context.Users.ToList();
+            List<FunctionModel> sortlist = new List<FunctionModel>();
+            UserModel current = new UserModel();
+            foreach (var item in allusers)
+            {
+                if (item.Username == userName)
+                {
+                    current = item;
+                }
+            }
+
+            foreach (var item in alllist)
+            {
+                if (current.UserId == item.UserId)
+                {
+                    sortlist.Add(item);
+                }
+            }
+            return sortlist;
+            */
             long userId = 0;
             try
             {
@@ -29,7 +52,10 @@ namespace MintControlAPI.Managers
             }
             catch (Exception)
             {
-                //TODO if none exist create a new user...
+                UserModel newUser = new UserModel();
+                newUser.Username = userName;
+                context.Users.Add(newUser);
+                context.SaveChanges();
             }
             
             return context.Functions.Where(e => e.UserId == userId || e.UserId == 1).Select(s => s).ToList();
