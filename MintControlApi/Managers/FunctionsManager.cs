@@ -82,6 +82,7 @@ namespace MintControlAPI.Managers
             catch (Exception)
             {
                 //TODO what to do if user doesnt exist, throw exception
+                throw;
             }
             value.UserId = userId;
             context.Functions.Add(value);
